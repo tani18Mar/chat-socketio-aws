@@ -1,0 +1,1108 @@
+
+/* =====================================================
+   DISEÑO GENERAL DEL CHAT
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    min-height: 100vh;
+    color: #4a3038;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 180, 220, 0.65), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(220, 190, 255, 0.55), transparent 30%),
+        radial-gradient(circle at 80% 90%, rgba(255, 220, 180, 0.55), transparent 30%),
+        linear-gradient(135deg, #fff5fa, #f8edf3, #f3e9e0);
+    overflow-x: hidden;
+}
+
+
+/* =====================================================
+   FONDO ANIMADO
+   ===================================================== */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::before {
+    background: #ff9dca;
+    top: -100px;
+    left: -100px;
+    animation: movimientoRosa 8s infinite alternate ease-in-out;
+}
+
+body::after {
+    background: #d8a7ff;
+    right: -120px;
+    bottom: -100px;
+    animation: movimientoTornasol 10s infinite alternate ease-in-out;
+}
+
+
+/* =====================================================
+   PANEL DE BIENVENIDA
+   ===================================================== */
+
+#panel-bienvenida {
+    width: 90%;
+    max-width: 550px;
+    margin: 80px auto;
+    padding: 45px 35px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+
+    box-shadow:
+        0 20px 50px rgba(100, 60, 70, 0.18),
+        0 0 30px rgba(255, 150, 210, 0.25);
+
+    backdrop-filter: blur(15px);
+
+    animation: aparecerDesdeArriba 0.8s ease;
+}
+
+
+/* =====================================================
+   LOGO
+   ===================================================== */
+
+.logo-chat {
+    width: 95px;
+    height: 95px;
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 45px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff7eb8,
+            #d69cff,
+            #ffcf91
+        );
+
+    box-shadow:
+        0 8px 25px rgba(210, 120, 170, 0.35),
+        inset 0 0 15px rgba(255, 255, 255, 0.7);
+
+    animation: flotar 3s infinite ease-in-out;
+}
+
+
+/* =====================================================
+   TÍTULOS
+   ===================================================== */
+
+#panel-bienvenida h1 {
+    font-size: 30px;
+    margin-bottom: 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #b94f7c,
+            #8d604d,
+            #b36de2,
+            #c76b98
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: tornasol 4s infinite linear;
+}
+
+#panel-bienvenida p {
+    margin-bottom: 25px;
+    color: #7b6268;
+}
+
+
+/* =====================================================
+   INPUT NOMBRE
+   ===================================================== */
+
+#persona {
+    width: 100%;
+    padding: 15px 18px;
+
+    border: 2px solid #edbfd5;
+    border-radius: 18px;
+
+    background: #fffafd;
+
+    outline: none;
+
+    font-size: 16px;
+    color: #60414a;
+
+    transition: 0.3s;
+}
+
+#persona:focus {
+    border-color: #d87da7;
+
+    box-shadow:
+        0 0 0 4px rgba(216, 125, 167, 0.12),
+        0 0 20px rgba(216, 125, 167, 0.18);
+}
+
+
+/* =====================================================
+   BOTÓN INGRESAR
+   ===================================================== */
+
+#ingresar {
+    width: 100%;
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border: none;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d96e9e,
+            #a66d72,
+            #b783c7
+        );
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(150, 90, 110, 0.25);
+
+    transition: 0.3s;
+}
+
+#ingresar:hover {
+    transform: translateY(-3px) scale(1.02);
+
+    box-shadow:
+        0 12px 25px rgba(150, 90, 110, 0.35);
+}
+
+
+/* =====================================================
+   CHAT
+   ===================================================== */
+
+#app-chat {
+    width: 94%;
+    max-width: 1000px;
+
+    margin: 30px auto;
+
+    animation: entrada 0.8s ease;
+}
+
+
+/* =====================================================
+   ENCABEZADO
+   ===================================================== */
+
+#app-chat h1 {
+    text-align: center;
+
+    margin-bottom: 18px;
+
+    font-size: 32px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #c75889,
+            #8b5d49,
+            #b76ce0,
+            #d66c9d
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: tornasol 5s infinite linear;
+}
+
+
+/* =====================================================
+   ESTADO CONECTADO
+   ===================================================== */
+
+.estado-conectado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+
+    color: #80656b;
+
+    font-size: 14px;
+}
+
+.estado-conectado::before {
+    content: "";
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #68c98b;
+
+    box-shadow: 0 0 10px #68c98b;
+
+    animation: pulsoVerde 1.5s infinite;
+}
+
+
+/* =====================================================
+   CONTENEDOR PRINCIPAL
+   ===================================================== */
+
+#app-chat {
+    background: rgba(255, 255, 255, 0.76);
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+
+    border-radius: 28px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 20px 55px rgba(90, 60, 70, 0.15),
+        0 0 35px rgba(230, 150, 200, 0.14);
+
+    backdrop-filter: blur(16px);
+}
+
+
+/* =====================================================
+   VENTANA DE MENSAJES
+   ===================================================== */
+
+#ventana-mensajes {
+    height: 500px;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 246, 251, 0.94),
+            rgba(248, 238, 243, 0.92)
+        );
+
+    border: 1px solid #efd8e2;
+
+    scroll-behavior: smooth;
+}
+
+
+/* Scroll */
+
+#ventana-mensajes::-webkit-scrollbar {
+    width: 8px;
+}
+
+#ventana-mensajes::-webkit-scrollbar-track {
+    background: #f8eaf0;
+    border-radius: 10px;
+}
+
+#ventana-mensajes::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(
+            #d782a8,
+            #a47bb8
+        );
+
+    border-radius: 10px;
+}
+
+
+/* =====================================================
+   MENSAJES
+   ===================================================== */
+
+#output {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* Burbuja */
+
+#output p {
+    position: relative;
+
+    width: fit-content;
+    max-width: 78%;
+
+    padding: 13px 17px;
+
+    border-radius: 20px;
+
+    color: #553b43;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff,
+            #fff3f8
+        );
+
+    border: 1px solid rgba(222, 176, 199, 0.55);
+
+    box-shadow:
+        0 6px 15px rgba(100, 65, 80, 0.10);
+
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Decoración lateral */
+
+#output p::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+
+    width: 4px;
+
+    border-radius: 5px;
+
+    background:
+        linear-gradient(
+            #ec83b2,
+            #b987d4,
+            #d49b73
+        );
+}
+
+
+/* Nombre */
+
+#output strong {
+    color: #a64f77;
+}
+
+
+/* =====================================================
+   MENSAJE RECIBIDO
+   ===================================================== */
+
+#output p.mensaje-recibido {
+    align-self: flex-start;
+
+    border-bottom-left-radius: 6px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff,
+            #fceaf4,
+            #f4eafa
+        );
+}
+
+
+/* =====================================================
+   MENSAJE ENVIADO
+   ===================================================== */
+
+#output p.mensaje-enviado {
+    align-self: flex-end;
+
+    border-bottom-right-radius: 6px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f9e5ef,
+            #eadcf4,
+            #f5dfd2
+        );
+
+    border-color: #e1bfd1;
+}
+
+
+/* =====================================================
+   ANIMACIÓN MENSAJE NUEVO
+   ===================================================== */
+
+.mensaje-nuevo {
+    animation:
+        brilloMensaje 1.2s ease-out,
+        reboteMensaje 0.55s ease-out;
+}
+
+
+/* Mensaje recibido */
+
+.mensaje-recibido.mensaje-nuevo {
+    animation:
+        entrarIzquierda 0.55s ease-out,
+        brilloMensaje 1.2s ease-out;
+}
+
+
+/* Mensaje enviado */
+
+.mensaje-enviado.mensaje-nuevo {
+    animation:
+        entrarDerecha 0.55s ease-out,
+        brilloMensaje 1.2s ease-out;
+}
+
+
+/* =====================================================
+   ENTRADA DESDE IZQUIERDA
+   ===================================================== */
+
+@keyframes entrarIzquierda {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateX(-55px)
+            translateY(15px)
+            scale(0.75);
+
+        filter: blur(5px);
+    }
+
+    55% {
+        opacity: 1;
+
+        transform:
+            translateX(8px)
+            translateY(-3px)
+            scale(1.04);
+
+        filter: blur(0);
+    }
+
+    75% {
+        transform:
+            translateX(-3px)
+            scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =====================================================
+   ENTRADA DESDE DERECHA
+   ===================================================== */
+
+@keyframes entrarDerecha {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateX(55px)
+            translateY(15px)
+            scale(0.75);
+
+        filter: blur(5px);
+    }
+
+    55% {
+        opacity: 1;
+
+        transform:
+            translateX(-8px)
+            translateY(-3px)
+            scale(1.04);
+
+        filter: blur(0);
+    }
+
+    75% {
+        transform:
+            translateX(3px)
+            scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =====================================================
+   BRILLO DEL MENSAJE
+   ===================================================== */
+
+@keyframes brilloMensaje {
+
+    0% {
+        filter: brightness(1);
+        box-shadow:
+            0 6px 15px rgba(100, 65, 80, 0.10);
+    }
+
+    35% {
+        filter: brightness(1.30);
+
+        box-shadow:
+            0 0 25px rgba(232, 126, 181, 0.45),
+            0 8px 20px rgba(100, 65, 80, 0.12);
+    }
+
+    60% {
+        filter: brightness(1.12);
+
+        box-shadow:
+            0 0 16px rgba(198, 139, 215, 0.30);
+    }
+
+    100% {
+        filter: brightness(1);
+
+        box-shadow:
+            0 6px 15px rgba(100, 65, 80, 0.10);
+    }
+}
+
+
+/* =====================================================
+   ANIMACIÓN REBOTE
+   ===================================================== */
+
+@keyframes reboteMensaje {
+
+    0% {
+        transform: scale(0.7);
+    }
+
+    60% {
+        transform: scale(1.06);
+    }
+
+    80% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =====================================================
+   IMÁGENES
+   ===================================================== */
+
+#output img {
+    display: block;
+
+    max-width: 280px;
+    max-height: 250px;
+
+    margin-top: 10px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 8px 20px rgba(90, 50, 70, 0.18);
+
+    animation: aparecerArchivo 0.5s ease;
+}
+
+
+/* =====================================================
+   VIDEOS
+   ===================================================== */
+
+#output video {
+    display: block;
+
+    width: min(320px, 100%);
+
+    margin-top: 10px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 8px 20px rgba(90, 50, 70, 0.18);
+
+    animation: aparecerArchivo 0.5s ease;
+}
+
+
+/* =====================================================
+   AUDIO
+   ===================================================== */
+
+#output audio {
+    display: block;
+
+    width: min(320px, 100%);
+
+    margin-top: 10px;
+
+    animation: aparecerAudio 0.7s ease;
+}
+
+
+/* =====================================================
+   ANIMACIÓN ARCHIVOS
+   ===================================================== */
+
+@keyframes aparecerArchivo {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.75) rotate(-2deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.05) rotate(1deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+
+/* =====================================================
+   ANIMACIÓN AUDIO
+   ===================================================== */
+
+@keyframes aparecerAudio {
+
+    0% {
+        opacity: 0;
+        transform: translateX(-20px) scale(0.85);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(5px) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+
+/* =====================================================
+   DESCARGAR
+   ===================================================== */
+
+.descarga {
+    display: inline-block;
+
+    margin-top: 10px;
+
+    padding: 7px 12px;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b66d89,
+            #906b83
+        );
+
+    font-size: 13px;
+
+    transition: 0.25s;
+}
+
+.descarga:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px rgba(120, 80, 100, 0.25);
+}
+
+
+/* =====================================================
+   INDICADOR ESCRIBIENDO
+   ===================================================== */
+
+#escribiendo-mensaje {
+    min-height: 28px;
+
+    padding: 5px 12px;
+
+    color: #9a6c7c;
+
+    font-size: 14px;
+}
+
+#escribiendo-mensaje p {
+    animation: aparecerTexto 0.35s ease;
+}
+
+#escribiendo-mensaje em {
+    opacity: 0.8;
+}
+
+
+/* =====================================================
+   ÁREA DE ESCRITURA
+   ===================================================== */
+
+#usuario,
+#mensaje {
+    border: 2px solid #e8c5d5;
+
+    outline: none;
+
+    background: #fffafd;
+
+    color: #5c4148;
+
+    transition: 0.3s;
+}
+
+#usuario {
+    width: 100%;
+
+    padding: 12px 15px;
+
+    margin-bottom: 10px;
+
+    border-radius: 15px;
+}
+
+#mensaje {
+    width: 100%;
+
+    min-height: 55px;
+
+    resize: vertical;
+
+    padding: 13px 15px;
+
+    border-radius: 17px;
+}
+
+#usuario:focus,
+#mensaje:focus {
+    border-color: #d784aa;
+
+    box-shadow:
+        0 0 0 4px rgba(215, 132, 170, 0.10),
+        0 0 18px rgba(215, 132, 170, 0.18);
+}
+
+
+/* =====================================================
+   BOTONES DEL CHAT
+   ===================================================== */
+
+#enviar,
+#adjuntar,
+#grabar {
+    border: none;
+
+    border-radius: 15px;
+
+    padding: 11px 17px;
+
+    margin-top: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.25s,
+        box-shadow 0.25s;
+}
+
+#enviar {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d86c9c,
+            #a979a5,
+            #9a6d5c
+        );
+
+    box-shadow:
+        0 6px 15px rgba(150, 90, 110, 0.22);
+}
+
+#adjuntar {
+    background: #f3e0e9;
+    color: #76515f;
+}
+
+#grabar {
+    background: #eadcf0;
+    color: #76567e;
+}
+
+#enviar:hover,
+#adjuntar:hover,
+#grabar:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(100, 70, 90, 0.18);
+}
+
+
+/* =====================================================
+   GRABANDO
+   ===================================================== */
+
+#grabar.grabando {
+    background:
+        linear-gradient(
+            135deg,
+            #d66b82,
+            #a95670
+        );
+
+    color: white;
+
+    animation:
+        pulsoGrabando 1s infinite;
+}
+
+
+/* =====================================================
+   ANIMACIONES GENERALES
+   ===================================================== */
+
+@keyframes entrada {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes aparecerDesdeArriba {
+
+    from {
+        opacity: 0;
+        transform: translateY(-35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes aparecerTexto {
+
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes flotar {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+
+@keyframes tornasol {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes movimientoRosa {
+
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(100px, 60px) scale(1.15);
+    }
+}
+
+
+@keyframes movimientoTornasol {
+
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(-80px, -60px) scale(1.2);
+    }
+}
+
+
+@keyframes pulsoVerde {
+
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.35);
+        opacity: 0.65;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+@keyframes pulsoGrabando {
+
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(200, 70, 100, 0.2);
+    }
+
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 20px rgba(200, 70, 100, 0.35);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(200, 70, 100, 0.2);
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    #app-chat {
+        width: 96%;
+        padding: 15px;
+    }
+
+    #ventana-mensajes {
+        height: 430px;
+        padding: 15px;
+    }
+
+    #output p {
+        max-width: 88%;
+    }
+
+    #app-chat h1 {
+        font-size: 25px;
+    }
+
+    #panel-bienvenida {
+        margin: 40px auto;
+        padding: 30px 20px;
+    }
+
+}

@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chat con Sockets</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+    <!-- =====================================
+         PANTALLA DE BIENVENIDA
+    ====================================== -->
+    <div id="panel-bienvenida" class="pantalla">
+
+        <div class="tarjeta-bienvenida">
+
+            <div class="logo-chat">
+                💬
+            </div>
+
+            <h1>¡Bienvenido!</h1>
+
+            <p class="subtitulo">
+                Práctica de evaluación usando
+                <strong>Socket.IO</strong>
+            </p>
+
+            <div class="decoracion">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="campo">
+                <span>👤</span>
+                <input
+                    id="persona"
+                    type="text"
+                    placeholder="Ingresa tu nombre"
+                    autocomplete="off"
+                >
+            </div>
+
+            <button
+                id="ingresar"
+                class="btn-principal"
+                onclick="ingresarAlChat()"
+            >
+                <span>Entrar al chat</span>
+                <span class="flecha">→</span>
+            </button>
+
+            <p class="info">
+                🔒 Comunicación mediante sockets
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         APLICACIÓN DEL CHAT
+    ====================================== -->
+    <div id="app-chat" class="chat-app" style="display:none;">
+
+        <!-- ENCABEZADO -->
+        <header class="chat-header">
+
+            <div class="perfil">
+
+                <div class="avatar">
+                    💬
+                </div>
+
+                <div>
+                    <h2>Chat con Socket</h2>
+                    <p>
+                        <span class="estado"></span>
+                        Conectado
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="titulo-practica">
+                <span>Práctica de evaluación</span>
+                <small>1er. parcial</small>
+            </div>
+
+        </header>
+
+
+        <!-- CUERPO DEL CHAT -->
+        <main class="chat-container">
+
+            <div class="mensaje-bienvenida">
+
+                <div class="icono-bienvenida">
+                    👋
+                </div>
+
+                <div>
+                    <strong>¡Hola!</strong>
+                    <p>
+                        Ya puedes comenzar a enviar mensajes.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- VENTANA DE MENSAJES -->
+            <div id="ventana-mensajes">
+
+                <div id="output"></div>
+
+                <div id="escribiendo-mensaje"></div>
+
+            </div>
+
+
+            <!-- ZONA DE ESCRITURA -->
+            <div class="zona-escritura">
+
+                <div class="usuario-chat">
+
+                    <span>👤</span>
+
+                    <input
+                        id="usuario"
+                        type="text"
+                        placeholder="Tu nombre"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="mensaje-row">
+
+                    <input
+                        id="mensaje"
+                        type="text"
+                        placeholder="Escribe un mensaje..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        id="enviar"
+                        class="btn-enviar"
+                        type="button"
+                    >
+                        <span>Enviar</span>
+                        <span>➤</span>
+                    </button>
+
+                </div>
+
+
+                <!-- ACCIONES -->
+                <div class="acciones">
+
+                    <input
+                        id="archivo"
+                        type="file"
+                        hidden
+                    >
+
+                    <button
+                        id="adjuntar"
+                        type="button"
+                        class="btn-accion"
+                        title="Adjuntar foto, video, audio o archivo"
+                    >
+                        📎
+                        <span>Adjuntar</span>
+                    </button>
+
+
+                    <button
+                        id="grabar"
+                        type="button"
+                        class="btn-accion"
+                        title="Grabar nota de voz"
+                    >
+                        🎤
+                        <span>Audio</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </main>
+
+
+        <!-- PIE -->
+        <footer class="chat-footer">
+
+            <span>✨ Socket.IO</span>
+
+            <span>•</span>
+
+            <span>Práctica de evaluación</span>
+
+        </footer>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="/chat.js"></script>
+
+</body>
+</html>
